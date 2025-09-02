@@ -776,7 +776,7 @@ void wake_controller(void) {
 in_addr_t discover_server(char *default_server) {
 	struct sockaddr_in d;
 	struct sockaddr_in s;
-	char *buf;
+	char *buf = "eNAME\0JSON\0";
 	struct pollfd pollinfo;
 	unsigned port;
 
@@ -784,8 +784,6 @@ in_addr_t discover_server(char *default_server) {
 
 	socklen_t enable = 1;
 	setsockopt(disc_sock, SOL_SOCKET, SO_BROADCAST, (const void *)&enable, sizeof(enable));
-
-	buf = "e";
 
 	memset(&d, 0, sizeof(d));
 	d.sin_family = AF_INET;
@@ -800,7 +798,7 @@ in_addr_t discover_server(char *default_server) {
 		LOG_INFO("sending discovery");
 		memset(&s, 0, sizeof(s));
 
-		if (sendto(disc_sock, buf, 1, 0, (struct sockaddr *)&d, sizeof(d)) < 0) {
+		if (sendto(disc_sock, buf, 11, 0, (struct sockaddr *)&d, sizeof(d)) < 0) {
 			LOG_INFO("error sending disovery");
 		}
 
