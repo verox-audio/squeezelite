@@ -33,6 +33,8 @@
 #include <gpiod.h>
 #endif  // RPI
 
+bool gpio_active;
+char *power_script;
 static int gpio_state = -1;
 static bool initialized = false;
 static int power_state = -1;
